@@ -1,9 +1,14 @@
+from scp.obj import *
+from scp.utl import *
+from scp.fnc import *
+
 from pygame.locals import *
 import pygame as pg
 
 from time import time as tme
 from sys import exit as ext
 
+clr = jsn_dat("eng/dat/clr.json")
 scn = {}
 
 scn["siz"] = (328, 256)
@@ -15,6 +20,7 @@ scn["win"] = None
 scn["win-bck"] = None
 
 siz = (scn["siz"][0] * scn["pix-siz"], scn["siz"][1] * scn["pix-siz"])
+txt = txt_utl("eng/dat/fnt.json", scn["srf"])
 
 tme_cal = {}
 fps_cal = {}
@@ -33,8 +39,8 @@ pg.display.set_caption("Verlet Inter")
 fps = pg.time.Clock()
 
 while True:
-    dpy.fill("white")
-    scn["srf"].fill("white")
+    dpy.fill(clr["white"])
+    scn["srf"].fill(clr["white"])
 
     tme_cal["now"] = tme()
     tme_cal["dlt"] = (tme_cal["now"] - tme_cal["str"])
@@ -47,6 +53,8 @@ while True:
         fps_cal["fps-lit"].pop(0)
     
     fps_cal["fps-avg"] = round(sum(fps_cal["fps-lit"]) / len(fps_cal["fps-lit"]))
+
+    txt.drw(fps_cal["fps-avg"], (1, 1), clr["black"])
 
     for evt in pg.event.get():
         if evt.type == pg.QUIT:
